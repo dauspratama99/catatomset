@@ -191,11 +191,7 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 <label for="">Keterangan</label>
-                                <label for="" style="color:red;"><i>*</i></label>
-                                <input type="text" class="form-control @error('catatan_trans') {{ 'is-invalid' }} @enderror" name="catatan_trans" value="">
-                                @error('catatan_trans')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
+                                <input type="text" class="form-control" name="catatan_trans" value="">
                             </div>
                         </div>
                     </div>

@@ -1,0 +1,6 @@
+local 
+
+validasi tanggal catat omset biaya
+perpindahan menu = oke
+tambahan nama toko di laporan = oke
+save kosong keterangan = oke

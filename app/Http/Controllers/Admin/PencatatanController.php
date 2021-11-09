@@ -17,23 +17,20 @@ class PencatatanController extends Controller
 
             $id_toko = DB::table('tb_usertoko')->where('id_usertoko', session('id_usertoko'))->first()->id_toko ?? 0;
             $data_omset = DB::table('tb_catatpenjualan')
-                        ->join('tb_toko','tb_catatpenjualan.id_trans_toko', 'tb_toko.id_toko')
-                        ->orderBy('tb_catatpenjualan.tgl_trans','DESC')
-                        ->where('id_trans_toko', $id_toko)->get();
+                ->join('tb_toko', 'tb_catatpenjualan.id_trans_toko', 'tb_toko.id_toko')
+                ->orderBy('tb_catatpenjualan.tgl_trans', 'DESC')
+                ->where('id_trans_toko', $id_toko)->get();
 
-            $data_total = DB::table('tb_catatpenjualan')->where('id_trans_toko',$id_toko)->get()->sum("biaya_trans");
-
+            $data_total = DB::table('tb_catatpenjualan')->where('id_trans_toko', $id_toko)->get()->sum("biaya_trans");
         } else {
 
             $data_omset = DB::table('tb_catatpenjualan')
-                            ->join('tb_toko','tb_catatpenjualan.id_trans_toko', 'tb_toko.id_toko')
-                            ->orderBy('tb_catatpenjualan.tgl_trans','DESC')
-                            ->get();
+                ->join('tb_toko', 'tb_catatpenjualan.id_trans_toko', 'tb_toko.id_toko')
+                ->orderBy('tb_catatpenjualan.tgl_trans', 'DESC')
+                ->get();
             $data_total = DB::table('tb_catatpenjualan')->get()->sum("biaya_trans");
-
-
         }
-        
+
         $data_toko = DB::table('tb_toko')->get();
         return view(
             'page/catat_data_omset/index',
@@ -50,17 +47,31 @@ class PencatatanController extends Controller
         $request->validate([
             'tgl_trans' => 'required',
             'biaya_trans' => 'required',
-            'catatan_trans' => 'required',
         ]);
 
-        DB::table('tb_catatpenjualan')->insert([
-            'id_trans_toko' => $request->id_trans_toko,
-            'tgl_trans' => $request->tgl_trans,
-            'biaya_trans' => $request->biaya_trans,
-            'catatan_trans' => $request->catatan_trans,
-        ]);
+        $tgl = $request->tgl_trans;
+        $idtoko =  $request->id_trans_toko;
 
-        Alert::success('Congrats', 'Data Berhasil Ditambahkan');
+        $cekTanggal = DB::table('tb_catatpenjualan')
+            ->where('tgl_trans', $tgl)
+            ->where('id_trans_toko', $idtoko)
+            ->count();
+
+        if ($cekTanggal > 0) {
+
+            Alert::warning('Warning', 'Tanggal Inputan Sudah Ada !');
+        } else {
+
+            DB::table('tb_catatpenjualan')->insert([
+                'id_trans_toko' => $request->id_trans_toko,
+                'tgl_trans' => $request->tgl_trans,
+                'biaya_trans' => $request->biaya_trans,
+                'catatan_trans' => $request->catatan_trans,
+            ]);
+
+            Alert::success('Congrats', 'Data Berhasil Ditambahkan');
+        }
+
         return redirect()
             ->route('catat_data_omset');
     }
@@ -76,12 +87,12 @@ class PencatatanController extends Controller
                 'data_trans' => $data_trans,
                 'url' => 'update.catat_data_omset',
             ]
-            );
+        );
     }
 
     public function update(Request $request, $id_trans)
     {
-        DB::table('tb_catatpenjualan')->where('id_trans',$id_trans)->update([
+        DB::table('tb_catatpenjualan')->where('id_trans', $id_trans)->update([
             'id_trans_toko' => $request->id_trans_toko,
             'tgl_trans' => $request->tgl_trans,
             'biaya_trans' => $request->biaya_trans,
@@ -90,14 +101,13 @@ class PencatatanController extends Controller
         Alert::success('Congrats', 'Data Berhasil Diedit');
         return redirect()
             ->route('catat_data_omset');
-
     }
 
     public function destroy($id_trans)
     {
-        DB::table('tb_catatpenjualan')->where('id_trans',$id_trans)->delete();
+        DB::table('tb_catatpenjualan')->where('id_trans', $id_trans)->delete();
         Alert::success('Congrats', 'Data Berhasil Dihapus');
         return redirect()
-            ->route('catat_data_omset'); 
+            ->route('catat_data_omset');
     }
 }

@@ -17,9 +17,17 @@
         <table>
             <tr>
                 <td>Tanggal Cetak</td>
+                <td>:</td>
                 <td>
                     {{ date('d F Y') }}
                 </td>
+            </tr>
+            <tr>
+                <td>Nama Toko / Outlet</td>
+                <td>:</td>
+                <td>
+                    {{ $data_toko->nama_toko }}
+                </td> 
             </tr>
         </table>
     </div>

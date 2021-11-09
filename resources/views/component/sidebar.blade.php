@@ -142,23 +142,21 @@
                 <i class="far fa-circle nav-icon"></i>
                 <p style="color: black;">Data Toko</p>
               </a>
-            </li>
-
-            <li class="nav-item">
-              <a href="{{ route('data_user_toko') }}" class="nav-link ">
-                <i class="far fa-circle nav-icon"></i>
-                <p style="color: black;">Data Karyawan</p>
-              </a>
-            </li>
-
+            </li> 
             <li class="nav-item">
               <a href="{{ route('data_user') }}" class="nav-link ">
                 <i class="far fa-circle nav-icon"></i>
                 <p style="color: black;">Data User</p>
               </a>
             </li>
-
-
+            <li class="nav-item">
+              <a href="{{ route('data_user_toko') }}" class="nav-link ">
+                <i class="far fa-circle nav-icon"></i>
+                <p style="color: black;">Data Karyawan</p>
+              </a>
+            </li>
+            
+            
             <!-- <li class="nav-item">
                 <a href="pages/layout/boxed.html" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>

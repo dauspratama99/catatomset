@@ -45,26 +45,40 @@ class PencatatanKeluarController extends Controller
             );
         }
 
-    public function simpan(Request $request)
-    {
-        $request->validate([
-            'tgl_trans' => 'required',
-            'biaya_trans' => 'required',
-            'catatan_trans' => 'required',
-        ]);
-
-        DB::table('tb_catatpengeluaran')->insert([
-            'id_trans_toko' => $request->id_trans_toko,
-            'tgl_trans' => $request->tgl_trans,
-            'biaya_trans' => $request->biaya_trans,
-            'catatan_trans' => $request->catatan_trans,
-        ]);
-
-        Alert::success('Congrats', 'Data Berhasil Ditambahkan');
-        return redirect()
-            ->route('catat_biaya_pengeluaran');
-    }
-
+        public function simpan(Request $request)
+        {
+            $request->validate([
+                'tgl_trans' => 'required',
+                'biaya_trans' => 'required',
+            ]);
+    
+            $tgl = $request->tgl_trans;
+            $idtoko =  $request->id_trans_toko;
+    
+            $cekTanggal = DB::table('tb_catatpengeluaran')
+                        ->where('tgl_trans',$tgl)
+                        ->where('id_trans_toko',$idtoko)
+                        ->count();
+            
+            if($cekTanggal > 0  ){
+                
+                Alert::warning('Warning', 'Tanggal Inputan Sudah Ada !');
+    
+            } else {
+    
+                DB::table('tb_catatpengeluaran')->insert([
+                    'id_trans_toko' => $request->id_trans_toko,
+                    'tgl_trans' => $request->tgl_trans,
+                    'biaya_trans' => $request->biaya_trans,
+                    'catatan_trans' => $request->catatan_trans,
+                ]);
+        
+                Alert::success('Congrats', 'Data Berhasil Ditambahkan');
+            }
+    
+            return redirect()
+                ->route('catat_biaya_pengeluaran');
+        }
     public function edit($id_trans)
     {
         $data_trans = DB::table('tb_catatpengeluaran')->where('id_trans', $id_trans)->first();

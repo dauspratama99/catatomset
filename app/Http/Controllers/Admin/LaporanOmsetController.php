@@ -102,8 +102,8 @@ class LaporanOmsetController extends Controller
     }
 
     public function tampilCetak($cabang, $dari, $sampai)
-    {
-
+    {   
+        // return $cabang;
         if($cabang == 'kosong' && $dari == 'kosong' && $sampai == 'kosong'){
             $laporan = [];
 
@@ -166,11 +166,16 @@ class LaporanOmsetController extends Controller
 
         }
 
+        $data_toko = DB::table('tb_toko')
+                        ->where('id_toko', $cabang)
+                        ->first();
+
         return view(
             'page/laporan_data_omset/laporan_omset',
             [
                 'laporan' => $laporan,
                 'data_total' => $data_total,
+                'data_toko' => $data_toko,
             ]
         );
     }
